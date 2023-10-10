@@ -1,0 +1,8 @@
+.new-supplier {
+  background-color: rgb(128, 128, 128);
+}
+
+.bottom-element {
+  position : absolute;
+  bottom   : 5%;
+}
