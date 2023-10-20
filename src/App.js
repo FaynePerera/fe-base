@@ -3,10 +3,19 @@ import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 import { ReactSession } from 'react-client-session';
 import UserInfo from './components/common/user-info'
 import NewSupplierUser from './components/common/add-new-supplier-user'
+import POReduction from './components/common/po-reduction'
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import {
+  Card,
+  CardGroup,
+  Container,
+  Form,
+  FormGroup,
+  Button,
+  Row,
+  Col,
+  Modal,
+} from "react-bootstrap";
 
 import "./App.css";
 
@@ -14,6 +23,9 @@ export default function App() {
 
   ReactSession.setStoreType("localStorage");
   ReactSession.set("userInfoForm", {name:"Fayne",lastname:"Perera"});
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <>
@@ -28,6 +40,13 @@ export default function App() {
                   <li>
                       <Link to="/new-supplier-user">Add New Supplier User</Link>
                   </li>
+                    <Row>
+                      <Col>
+                        <Button className="mb-4" sm="3" md="4" variant="dark" onClick={handleShow}>
+                          Add Supplier Internal Info (Optional)
+                        </Button>
+                      </Col>
+                    </Row>
                 </ul>
             </nav>
 
@@ -39,8 +58,27 @@ export default function App() {
                 <Routes>
                     <Route path="/new-supplier-user" element={<div><NewSupplierUser /></div>} />
                 </Routes>
+                <Routes>
+                    <Route path="/pr-info" element={<div><POReduction /></div>} />
+                </Routes>
               </Row>
             </Container>
+            <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Supplier Internal Use Only (Optional)</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <POReduction />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleClose}>
+                Save 
+              </Button>
+            </Modal.Footer>
+          </Modal>
           </div>
       </Router>
     </>

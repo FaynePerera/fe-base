@@ -12,6 +12,10 @@ function UserInfo() {
 
  
 
+  const url = 'https://v70epn01t.tmm.na.corp.toyota.com/EPNS-Service/api/user/'
+
+ 
+
   const getUserData = async (url) => {
 
     const response = await fetch(url);
@@ -30,15 +34,22 @@ function UserInfo() {
 
  
 
+/*
   React.useEffect(() => {
 
-    const url = 'https://v70epn01t.tmm.na.corp.toyota.com/EPNS-Service/api/user/'+username
-
-    getUserData(url);
+    getUserData(url+username);
 
   }, []);
+*/
+ 
 
  
+
+  const handleClick = () => {
+
+    getUserData(url+username)
+
+  };
 
  
 
@@ -61,6 +72,8 @@ function UserInfo() {
         <span>User First Name is: {user.firstName}</span>
 
       </div>
+
+      <button type="submit" onClick={handleClick} >Search</button>
 
     </>
 
