@@ -53,3 +53,7 @@ h4 {
 	color: $red;
 	padding-left: 107px;
 }
+
+.gray-bg {
+	background-color: lightgray;
+}
