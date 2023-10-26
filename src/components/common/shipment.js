@@ -4,6 +4,7 @@ import {
     Row,
     Col,
     Ratio,
+    Form,
   } from "react-bootstrap";
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -39,8 +40,7 @@ const Shipment = ({shipment}, key) => {
     return (
         
             <tr key={key}>
-                <td>{shipment.ship_suffix}</td>
-                <td>{shipment.epns_seq}</td>
+                <td>{shipment.ship_suffix}-{shipment.epns_seq}</td>
                 <td>{shipment.shipqty}</td>
                 <td>{shipment.requiredship}</td>
                 <td>{new Date(shipment.shipduedate).toLocaleDateString()}</td>
@@ -63,7 +63,13 @@ const Shipment = ({shipment}, key) => {
                         </LocalizationProvider>
                     }
                 </td>
-                <td>{shipment.altpickupcountry || "Same"}</td>
+                <td>
+                <Form.Select aria-label="Country list" value={shipment.altpickupcountry}>
+                      <option value="">Select country</option>
+                      <option value="CA">Canada</option>
+                      <option value="US">United States of America</option>
+                    </Form.Select>
+                </td>
                 <td>{shipment.altpickupzip || "Same"}</td>
                 <td>
                     <Row>

@@ -93,7 +93,7 @@ export default function POReduction() {
                       <tbody>
                         <tr>
                           <td>{podata.fullEPNSPrNo}</td>
-                          <td>{new Date(podata.issue).toLocaleDateString()}</td>
+                          <td>{new Date(podata.issue).toLocaleDateString() || ""}</td>
                           <td>{podata.type}</td>
                         </tr>
                       </tbody>
@@ -218,8 +218,7 @@ export default function POReduction() {
                 <Table striped bordered hover responsive>
                   <thead>
                     <tr>
-                      <th>Ship Suffix</th>
-                      <th>Seq</th>
+                      <th>Ship Suffix </th>
                       <th>Qty</th>
                       <th>Req'd Ship</th>
                       <th>TMNA Due Date</th>
