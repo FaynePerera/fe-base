@@ -5,20 +5,15 @@ import {
   CardGroup,
   Container,
   Form,
-  FormGroup,
   Button,
   Row,
   Col,
   Modal,
   Table,
 } from "react-bootstrap";
-import { Link, useNavigate, Router, json } from "react-router-dom";
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import CopyAllIcon from '@mui/icons-material/CopyAll';
+import ShipmentGrid from "./grid";
 import Shipment from "./shipment";
+import CopyAllIcon from '@mui/icons-material/CopyAll';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./new-supplier.css";
@@ -27,6 +22,7 @@ import "./po-reduction.css";
 
 export default function POReduction() {
   const [podata, setPodata] = useState({});
+  const [shipments, setShipments] = useState([]);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -41,6 +37,7 @@ export default function POReduction() {
     const jsonData = await response.json();
 
     setPodata(jsonData);
+    setShipments(jsonData.shipments)
   };
 
   useEffect(() => {
@@ -51,24 +48,25 @@ export default function POReduction() {
 
   useEffect(() => {
 
+  }, [podata, shipments]);
 
-  }, [podata]);
+  const handleBulkCopy = () => {
+    let tmp = shipments
+    tmp = tmp.map((shipment) => {
+      //console.log(shipment);
+      shipment.promiseDate = shipment.shipduedate
+      return shipment
+    })
+    
+    setShipments(tmp)
+    console.log(shipments)
+  }
+
 
   const handleSubmit = () => {
     console.log("saved")
   }
 
-  const handleBulkCopy = () => {
-    console.log("bulk copy");
-    if(podata.shipments){
-      let podataTmp = podata;
-      podataTmp.shipments.forEach(element => {
-        element.promiseDate = element.shipduedate
-      });
-      setPodata(podataTmp)
-      console.log(podata)
-    }
-  }
 
   return (
     <>
@@ -210,13 +208,13 @@ export default function POReduction() {
               </Card.Title>
               <Card.Text>
                 <Form.Group as={Row} className="mb-3">
-                {/* <Row>
+                <Row>
                   <Col sm="12" md={{ span: 4, offset: 11 }}>
-                    <Button variant="secondary" size="sm" onClick={()=> {handleBulkCopy()}}>
+                    <Button variant="secondary" size="sm" className="mb-3 mt-3" onClick={()=> {handleBulkCopy()}}>
                       <CopyAllIcon />
                     </Button>
                   </Col>
-                </Row> */}
+                </Row>
                 <Table striped bordered hover responsive>
                   <thead>
                     <tr>
@@ -232,7 +230,7 @@ export default function POReduction() {
                     </tr>
                   </thead>
                   <tbody>
-                    {podata.shipments && podata.shipments.map((shipment, key) => {
+                    {shipments && shipments.map((shipment, key) => {
                       console.log("render")
                       return <Shipment shipment={shipment} key={key} />
                     })}
@@ -240,11 +238,11 @@ export default function POReduction() {
                   </tbody>
                 </Table>
                 </Form.Group>
-                <Card.Footer className="text-center">
-                  <Button className="btn-sm" sm={3} type="submit" variant="outline-dark">Submit Promise Date</Button>
-                </Card.Footer>
               </Card.Text>
             </Card.Body>
+            <Card.Footer className="text-center">
+              <Button className="btn-sm" sm={3} type="submit" variant="outline-dark">Submit Promise Date</Button>
+            </Card.Footer>
             <Row>
               <Col className="text-center">
                 <Button className="btn-sm mb-4" sm="3" md="4" variant="dark" onClick={handleShow}>

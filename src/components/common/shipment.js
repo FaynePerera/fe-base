@@ -14,18 +14,28 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const Shipment = ({shipment}, key) => {
+    //console.log(shipment)
     const [ promiseDate, setPromiseDate ] = useState()
+    const [ showPromiseDate, setShowPromiseDate ] = useState(false)
 
     const handleOneCopy = () => {
+        shipment.promiseDate = shipment.shipduedate
         setPromiseDate(shipment.shipduedate)
         console.log(shipment);
     }
 
     const handleUndo = () => {
+        //shipment.promiseDate = ""
+        delete shipment.promiseDate
         setPromiseDate("")
         console.log(shipment);
     }
-    
+
+    /*useEffect(() => {
+        shipment.promiseDate = promiseDate
+        //delete shipment.promiseDate
+    },[promiseDate, shipment])*/
+
     return (
         
             <tr key={key}>
@@ -35,13 +45,19 @@ const Shipment = ({shipment}, key) => {
                 <td>{shipment.requiredship}</td>
                 <td>{new Date(shipment.shipduedate).toLocaleDateString()}</td>
                 <td style={{"fontSize" : "2pts"}}>
-                    {promiseDate? 
-                        new Date(promiseDate).toLocaleDateString() 
+                    {showPromiseDate && new Date(promiseDate).toLocaleDateString()}
+                    {shipment.promiseDate? 
+                        new Date(shipment.promiseDate).toLocaleDateString() 
                         :  
-                        <LocalizationProvider  dateAdapter={AdapterDayjs}>
+                        !showPromiseDate && <LocalizationProvider  dateAdapter={AdapterDayjs}>
                             <DemoContainer components={['DatePicker']}>
                                 <Ratio aspectRatio={'3x2'}>
-                                    <DatePicker  size="sm"/>
+                                    <DatePicker  size="sm" onAccept={(newVal)=> {
+                                        console.log(newVal.$d)
+                                        setPromiseDate(newVal.$d)
+                                        setShowPromiseDate(true)
+                                        shipment.promiseDate = promiseDate
+                                    }}/>
                                 </Ratio>  
                             </DemoContainer>
                         </LocalizationProvider>
