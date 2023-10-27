@@ -57,3 +57,21 @@ h4 {
 .gray-bg {
 	background-color: lightgray;
 }
+
+.accordion-button {
+	padding: 5px;
+	padding-right: 10px;
+}
+
+
+.accordion-button:not(.collapsed) {
+	background-color: "#ffd2cf" !important; 
+}
+
+.card-body {
+	padding-bottom: 0;
+}
+
+.datepicker-po input {
+	padding: 9px;
+}

@@ -5,72 +5,69 @@ import {
     Col,
     Ratio,
     Form,
+    Table,
   } from "react-bootstrap";
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import UndoSharpIcon from '@mui/icons-material/UndoSharp';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-const Shipment = ({shipment}, key) => {
+const Shipment = ({shipment}, key, showCols) => {
     //console.log(shipment)
     const [ promiseDate, setPromiseDate ] = useState()
-    const [ showPromiseDate, setShowPromiseDate ] = useState(false)
+    const [ show, setShow] = useState(showCols)
 
+    const handleShow = () => {
+        setShow(!show)
+      }
+      
     const handleOneCopy = () => {
-        shipment.promiseDate = shipment.shipduedate
         setPromiseDate(shipment.shipduedate)
-        console.log(shipment);
     }
 
     const handleUndo = () => {
-        //shipment.promiseDate = ""
-        delete shipment.promiseDate
         setPromiseDate("")
-        console.log(shipment);
     }
 
-    /*useEffect(() => {
-        shipment.promiseDate = promiseDate
-        //delete shipment.promiseDate
-    },[promiseDate, shipment])*/
-
     return (
-        
-            <tr key={key}>
+        <Table striped bordered hover responsive>
+        <thead>
+          <tr>
+            <th>Ship Suffix </th>
+            <th>Qty</th>
+            <th>Req'd Ship</th>
+            <th>TMNA Due Date</th>
+            <th>Promise Date </th>
+            <th>Actions</th>
+            {show &&
+              <>
+                <th>Alt Pickup Country</th>
+                <th>Alt Pickup Zip</th>
+              </>
+            }
+          </tr>
+        </thead>
+        <tbody>
+        <tr key={key}>
                 <td>{shipment.ship_suffix}-{shipment.epns_seq}</td>
                 <td>{shipment.shipqty}</td>
                 <td>{shipment.requiredship}</td>
                 <td>{new Date(shipment.shipduedate).toLocaleDateString()}</td>
                 <td style={{"fontSize" : "2pts"}}>
-                    {showPromiseDate && new Date(promiseDate).toLocaleDateString()}
-                    {shipment.promiseDate? 
-                        new Date(shipment.promiseDate).toLocaleDateString() 
-                        :  
-                        !showPromiseDate && <LocalizationProvider  dateAdapter={AdapterDayjs}>
-                            <DemoContainer components={['DatePicker']}>
-                                <Ratio aspectRatio={'3x2'}>
-                                    <DatePicker  size="sm" onAccept={(newVal)=> {
-                                        console.log(newVal.$d)
-                                        setPromiseDate(newVal.$d)
-                                        setShowPromiseDate(true)
-                                        shipment.promiseDate = promiseDate
-                                    }}/>
-                                </Ratio>  
-                            </DemoContainer>
-                        </LocalizationProvider>
-                    }
+                    <LocalizationProvider  dateAdapter={AdapterDayjs}>
+                        <DemoContainer components={['DatePicker']} sx={{
+                                    paddingTop: '2px',
+                                    }}>
+                            <Ratio aspectRatio={'1/3'}>
+                                <DatePicker value={promiseDate} className="datepicker-po" size="sm"
+                                />
+                            </Ratio>  
+                        </DemoContainer>
+                    </LocalizationProvider>
                 </td>
-                <td>
-                <Form.Select aria-label="Country list" value={shipment.altpickupcountry}>
-                      <option value="">Select country</option>
-                      <option value="CA">Canada</option>
-                      <option value="US">United States of America</option>
-                    </Form.Select>
-                </td>
-                <td>{shipment.altpickupzip || "Same"}</td>
                 <td>
                     <Row>
                         <Col sm="5" style={{"paddingLeft": "10px"}}>
@@ -79,14 +76,34 @@ const Shipment = ({shipment}, key) => {
                 </Button>
                         </Col>
                         <Col sm="5" style={{"paddingLeft": "10px"}}>
-                        <Button variant="outline-secondary" size="sm" onClick={() => handleUndo()}>
-                    <UndoSharpIcon style={{"fontSize":"small"}}/>
+                        <Button variant="outline-secondary" size="sm" onClick={() => handleShow()}>
+                    <VisibilityIcon style={{"fontSize":"small"}}/>
                 </Button>
                         </Col>
                     </Row>
                 
                 </td>
+                {show &&
+                    <>
+                        <td>
+                            <Form.Select aria-label="Country list" value={shipment.altpickupcountry}>
+                                <option value="">Select country</option>
+                                <option value="CA">Canada</option>
+                                <option value="US">United States of America</option>
+                            </Form.Select>
+                        </td>
+                        <td>
+                            <Form.Control type="Zipcode" placeholder="zip code"/>
+                        </td>
+                    </>
+                }
+                
+                
             </tr>
+        </tbody>
+        </Table>
+        
+            
     )
 }
 

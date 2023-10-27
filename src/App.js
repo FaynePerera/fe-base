@@ -1,13 +1,22 @@
 import { Outlet } from "react-router";
-import Navbar from "./components/navbar";
+import Navigation from "./components/navbar";
+import {
+    Container,
+    Row, 
+    Col,
+  } from "react-bootstrap";
 
 const App = () => {
     return (
         <div>
-            <Navbar />
-            <div className="container">
-                <Outlet />
-            </div>
+            <Navigation />
+            <Container fluid="md">
+                <Row>
+                    <Col>
+                        <Outlet />
+                    </Col>
+                </Row>
+            </Container>
         </div>
     );
 };

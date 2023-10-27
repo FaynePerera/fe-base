@@ -1,24 +1,32 @@
 import { NavLink } from "react-router-dom";
+import {
+    Navbar,
+    Nav,
+    NavDropdown,
+    Container,
+  } from "react-bootstrap";
 
-const Navbar = () => {
+const Navigation = () => {
     return (
+        <>
         <nav className="navbar navbar-dark bg-dark">
             <div className="container">
-                <NavLink className="btn btn-outline-primary" to="/home">
+                <NavLink className="btn btn-outline-danger" to="/home">
                     Home
                 </NavLink>
-                <NavLink className="btn btn-outline-primary" to="/userinfo">
+                <NavLink className="btn btn-outline-danger" to="/userinfo">
                     User Information
                 </NavLink>
-                <NavLink className="btn btn-outline-primary" to="/new-supplier-user">
+                <NavLink className="btn btn-outline-danger" to="/new-supplier-user">
                     Add New Supplier Use
                 </NavLink>
-                <NavLink className="btn btn-outline-primary" to="/pr-info">
+                <NavLink className="btn btn-outline-danger" to="/pr-info">
                     PO Reduction
                 </NavLink>
             </div>
         </nav>
+       </>
     );
 };
 
-export default Navbar;
+export default Navigation;
